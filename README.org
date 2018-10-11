@@ -16,3 +16,9 @@
    #+BEGIN_SRC sh
      ln -s $PWD/.emacs.d ~/.emacs.d/personal
    #+END_SRC
+
+** tint2
+
+   #+BEGIN_SRC sh
+     ln -s $PWD/tint2rc ~/.config/tint2
+   #+END_SRC
