@@ -4,3 +4,9 @@
    #+BEGIN_SRC sh
      ln -s $PWD/.zshrc ~/.zshrc
    #+END_SRC
+
+** stumpwm
+
+   #+BEGIN_SRC sh
+     ln -s $PWD/.stumpwmrc ~/.stumpwmrc
+   #+END_SRC

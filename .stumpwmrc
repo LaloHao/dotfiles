@@ -1,0 +1,225 @@
+;; -*- mode: stumpwm -*-
+(in-package :stumpwm)
+
+(set-prefix-key (kbd "s-t"))
+
+(run-shell-command "setxkbmap -model inspiron -layout latam" t)
+(run-shell-command "xset -b" t)
+(run-shell-command "xmodmap -e \"clear lock\"" t)
+(run-shell-command "xmodmap -e \"keycode 66 = F20\"" t)
+(run-shell-command "xrandr --output LVDS1 --auto --output HDMI1 --auto --above LVDS1 --primary")
+(run-shell-command "feh --bg-center /home/hao/Imágenes/arch-linux-an-dark.png")
+(run-shell-command "systemctl --user start emacs &")
+(run-shell-command "sleep 1.5 && xcompmgr &")
+(run-shell-command "sleep 2 && tint2 &")
+
+(define-key *top-map* (kbd "F11")   "exec amixer -D pulse sset Master 5%-")
+(define-key *top-map* (kbd "F12")   "exec amixer -D pulse sset Master 5%+")
+(define-key *top-map* (kbd "F10")          "exec amixer sset Master toggle")
+
+(define-key *top-map* (kbd "SunPrint_Screen")          "exec xfce4-screenshooter")
+
+(define-key *top-map* (kbd "z")          "exec xdotool key Left")
+(define-key *top-map* (kbd "x")          "exec xdotool key Down")
+(define-key *top-map* (kbd "c")          "exec xdotool key Right")
+(define-key *top-map* (kbd "s")          "exec xdotool key Up")
+(define-key *top-map* (kbd "|")          "exec xdotool key less")
+;; (undefine-key *top-map* (kbd "|"))
+(define-key *top-map* (kbd "degree")          "exec xdotool key greater")
+
+(undefine-key *top-map* (kbd "z"))
+(undefine-key *top-map* (kbd "x"))
+(undefine-key *top-map* (kbd "c"))
+(undefine-key *top-map* (kbd "s"))
+
+(define-key *top-map* (kbd "A") "exec xdotool key 'Control+Left'")
+(define-key *top-map* (kbd "S") "exec xdotool key 'Control+Down'")
+(define-key *top-map* (kbd "D") "exec xdotool key 'Control+Right'")
+(define-key *top-map* (kbd "W") "exec xdotool key 'Control+Up'")
+
+(undefine-key *top-map* (kbd "A"))
+(undefine-key *top-map* (kbd "S"))
+(undefine-key *top-map* (kbd "D"))
+(undefine-key *top-map* (kbd "W"))
+
+;; (define-key *top-map* (kbd "F20") "command-mode")
+(define-key *top-map* (kbd "C-M-Delete") "restart-hard")
+(define-key *top-map* (kbd "s-RET") "exec terminator")
+(define-key *top-map* (kbd "s-e") "exec emacsclient -c")
+(define-key *top-map* (kbd "s-q") "delete")
+(define-key *top-map* (kbd "s-ESC") "exec xset dpms force off")
+
+(define-key *top-map* (kbd "Scroll_Lock") "exec xbacklight -dec 10")
+(define-key *top-map* (kbd "Pause") "exec xbacklight -inc 10")
+
+(define-key *top-map* (kbd "s-f") "pull-hidden-next")
+(define-key *top-map* (kbd "s-b") "pull-hidden-previous")
+
+(define-key *top-map* (kbd "s-Up") "move-focus up")
+(define-key *top-map* (kbd "s-Down") "move-focus down")
+(define-key *top-map* (kbd "s-Left") "move-focus left")
+(define-key *top-map* (kbd "s-Right") "move-focus right")
+
+(define-key *top-map* (kbd "s-k") "move-focus up")
+(define-key *top-map* (kbd "s-j") "move-focus down")
+(define-key *top-map* (kbd "s-h") "move-focus left")
+(define-key *top-map* (kbd "s-l") "move-focus right")
+
+(define-key *top-map* (kbd "M-s-n") "gnext-with-window")
+(define-key *top-map* (kbd "M-s-p") "gprev-with-window")
+(define-key *top-map* (kbd "s-n") "gnext")
+(define-key *top-map* (kbd "s-p") "gprev")
+
+(define-key *top-map* (kbd "s-h") "move-focus left")
+(define-key *top-map* (kbd "s-M-Up") "move-window up")
+(define-key *top-map* (kbd "s-M-Down") "move-window down")
+(define-key *top-map* (kbd "s-M-Left") "move-window left")
+(define-key *top-map* (kbd "s-M-Right") "move-window right")
+
+(define-key *top-map* (kbd "S-s-Up") "exchange-direction up")
+(define-key *top-map* (kbd "S-s-Down") "exchange-direction down")
+(define-key *top-map* (kbd "S-s-Left") "exchange-direction left")
+(define-key *top-map* (kbd "S-s-Right") "exchange-direction right")
+
+(define-key *top-map* (kbd "s-Delete") "remove")
+(define-key *top-map* (kbd "s-DEL") "fclear")
+
+(defun string-join (str lst)
+  (reduce (lambda (a b) (concatenate 'string a str b)) lst))
+
+(setq
+ exec-rofi
+ (string-join
+  " " '("exec rofi"
+        "-show combi"
+        "-font \"mono 10\""
+        "-separator-style none"
+        "-color-window \"#222222, #222222, #b1b4b3\""
+        "-color-normal \"#222222, #b1b4b3, #222222, #005577, #b1b4b3\""
+        )))
+
+(define-key *top-map* (kbd "s-SPC") exec-rofi)
+
+(define-key *top-map* (kbd "s-;") "colon")
+
+(define-key *top-map* (kbd "s-1") "only")
+(define-key *top-map* (kbd "s-2") "vsplit")
+(define-key *top-map* (kbd "s-3") "hsplit")
+
+(defvar hao/root-keys
+  '(("w"  . "windowlist")
+
+    ("1"  . "only")
+    ("2"  . "vsplit")
+    ("3"  . "hsplit")
+
+    ("f"  . "pull-hidden-next")
+    ("b"  . "pull-hidden-previous")
+
+    ("s-q"  . "delete")
+    ("s-Delete"  . "remove")
+    ("s-DEL"  . "fclear")
+
+    ("e"  . "exec emacsclient -c")
+
+    ("s-ESC"  . "exec xset dpms force off")
+
+    ("s-Up"  . "move-focus up")
+    ("s-Down"  . "move-focus down")
+    ("s-Left"  . "move-focus left")
+    ("s-Right"  . "move-focus right")
+
+    ("s-M-Up"  . "move-window up")
+    ("s-M-Down"  . "move-window down")
+    ("s-M-Left"  . "move-window left")
+    ("s-M-Right"  . "move-window right")
+
+    ("S-s-Up"  . "exchange-direction up")
+    ("S-s-Down"  . "exchange-direction down")
+    ("S-s-Left"  . "exchange-direction left")
+    ("S-s-Right"  . "exchange-direction right")
+
+    ("a"  . "dump-desktop-to-file")
+    ("q"  . "restore-from-file")
+
+    ("F20"  . "abort")))
+
+(defun cat (&rest strings)
+  "Concatenates strings, like the Unix command 'cat'.
+A shortcut for (concatenate 'string foo bar)."
+  (apply 'concatenate 'string strings))
+
+(defun undefine-keys (map &rest bindings)
+  (when map
+    (loop for key in bindings
+          do (undefine-key map key))))
+
+(undefine-keys *root-map*
+               (kbd "c")
+               (kbd "C-c")
+               (kbd "e")
+               (kbd "C-e")
+               (kbd "b")
+               (kbd "C-b")
+               (kbd "a")
+               (kbd "C-a")
+               (kbd "v")
+               (kbd "m")
+               (kbd "C-m")
+               (kbd "G")
+               (kbd "F1")
+               (kbd "F2")
+               (kbd "F3")
+               (kbd "F4")
+               (kbd "F5")
+               (kbd "F6")
+               (kbd "F7")
+               (kbd "F8")
+               (kbd "F9")
+               (kbd "F10")
+               (kbd "t")
+               (kbd "C-n")
+               (kbd "M-n")
+               (kbd "C-M-n")
+               (kbd "SPC")
+               (kbd "C-SPC")
+               (kbd "W")
+               (kbd "s-t")
+               (kbd "M-t")
+               (kbd "C-0")
+               (kbd "C-1")
+               (kbd "C-2")
+               (kbd "C-3")
+               (kbd "C-4")
+               (kbd "C-5")
+               (kbd "C-6")
+               (kbd "C-7")
+               (kbd "C-8")
+               (kbd "C-9")
+               (kbd "0")
+               (kbd "1")
+               (kbd "2")
+               (kbd "3")
+               (kbd "4")
+               (kbd "5")
+               (kbd "6")
+               (kbd "7")
+               (kbd "8")
+               (kbd "9")
+               (kbd "o")
+               (kbd "TAB")
+               (kbd "M-TAB")
+               (kbd "F")
+               (kbd "Q")
+               (kbd "l")
+               (kbd "C-l")
+               (kbd "C-u")
+               (kbd "C-w")
+               (kbd "k")
+               (kbd "C-k")
+               (kbd "K"))
+
+(mapc (lambda (tuple) (define-key *root-map* (kbd (car tuple)) (cdr tuple))) hao/root-keys)
+
+;; (defun mouse-speed (&optional speed)
+;;   (when speed ))
