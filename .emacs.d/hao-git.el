@@ -6,10 +6,12 @@
 
 (prelude-require-packages
  '(magit-gitflow
-   ansi-color))
+   ansi-color
+   magit-gh-pulls))
 
 (require 'magit-gitflow)
 (require 'ansi-color)
+(require 'magit-gh-pulls)
 
 (defun color-buffer (proc &rest args)
   "Color PROC buffer."
@@ -21,6 +23,7 @@
 
 (add-hook 'magit-mode-hook 'turn-on-magit-gitflow)
 (advice-add 'magit-process-filter :after #'color-buffer)
+(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 (provide 'hao-git)
 ;;; hao-git.el ends here
