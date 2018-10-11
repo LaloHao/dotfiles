@@ -1,0 +1,26 @@
+;;; hao-git.el --- Git configuration              -*- lexical-binding: t; -*-
+;;; Commentary:
+;;; Code:
+
+(require 'prelude-packages "~/.emacs.d/init.el")
+
+(prelude-require-packages
+ '(magit-gitflow
+   ansi-color))
+
+(require 'magit-gitflow)
+(require 'ansi-color)
+
+(defun color-buffer (proc &rest args)
+  "Color PROC buffer."
+  (interactive)
+  (with-current-buffer (process-buffer proc)
+    (read-only-mode -1)
+    (ansi-color-apply-on-region (point-min) (point-max))
+    (read-only-mode 1)))
+
+(add-hook 'magit-mode-hook 'turn-on-magit-gitflow)
+(advice-add 'magit-process-filter :after #'color-buffer)
+
+(provide 'hao-git)
+;;; hao-git.el ends here

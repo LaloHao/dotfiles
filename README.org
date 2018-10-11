@@ -10,3 +10,9 @@
    #+BEGIN_SRC sh
      ln -s $PWD/.stumpwmrc ~/.stumpwmrc
    #+END_SRC
+
+** emacs
+
+   #+BEGIN_SRC sh
+     ln -s $PWD/.emacs.d ~/.emacs.d/personal
+   #+END_SRC
