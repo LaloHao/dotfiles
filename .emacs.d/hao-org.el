@@ -8,7 +8,8 @@
  '(org-ref helm-bibtex
    evil-org org-page org-evil
    org-attach-screenshot
-   ob-spice web-mode org-trello))
+   ;; ob-spice
+   web-mode org-trello))
 
 (require 'org-ref)
 (require 'org-ref-pdf)

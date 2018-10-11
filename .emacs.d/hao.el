@@ -11,7 +11,6 @@
 (load (expand-file-name "hao-pretty"))
 (load (expand-file-name "hao-translate"))
 (load (expand-file-name "hao-ui"))
-(load (expand-file-name "hao-utils"))
 (load (expand-file-name "hao-evil"))
 
 ;; ;;;###autoload

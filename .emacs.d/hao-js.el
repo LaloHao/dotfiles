@@ -4,6 +4,14 @@
 
 (require 'prelude-packages "~/.emacs.d/init.el")
 
+(prelude-require-packages
+ '(rjsx-mode
+   emmet-mode
+   add-node-modules-path
+   js2-refactor
+   js-doc
+   flow-minor-mode))
+
 (with-no-warnings
   (require 'cl))
 

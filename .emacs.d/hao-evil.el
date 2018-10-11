@@ -10,7 +10,8 @@
    evil-paredit evil-numbers evil-nerd-commenter
    evil-extra-operator
    evil-org org-page org-evil
-   evil-magit))
+   evil-magit
+   hydra))
 
 (require 'evil)
 (require 'evil-org)
