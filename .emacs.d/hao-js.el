@@ -42,9 +42,9 @@
  js-doc-url "https://hao.systems"
  js-doc-license "WTFPL")
 
-;; (delete '("\\.js\\'" . js2-mode) auto-mode-alist)
+(delete '("\\.js\\'" . js2-mode) auto-mode-alist)
 ;; (delete '("\\.js\\'" . rjsx-mode) auto-mode-alist)
-;; (add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 (defvar react-filter-files nil
@@ -185,7 +185,7 @@ export default combineReducers({
 (add-hook 'js2-mode-hook #'js2r-setup-keys)
 (add-hook 'js2-mode-hook #'emmet-mode)
 (add-hook 'js2-mode-hook #'add-node-modules-path)
-(add-hook 'js2-mode-hook #'flow-js2-mode)
+;; (add-hook 'js2-mode-hook #'flow-js2-mode)
 
 ;; (remove-hook 'rjsx-mode-hook #'js2-refactor-mode)
 ;; (remove-hook 'rjsx-mode-hook #'emmet-mode)
