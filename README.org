@@ -1,0 +1,6 @@
+* Archivos de configuración
+** zsh
+
+   #+BEGIN_SRC sh
+     ln -s $PWD/.zshrc ~/.zshrc
+   #+END_SRC
