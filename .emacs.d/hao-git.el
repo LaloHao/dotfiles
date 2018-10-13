@@ -25,5 +25,11 @@
 (advice-add 'magit-process-filter :after #'color-buffer)
 (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
+(defun turn-off-linum ()
+  ""
+  (linum-relative-mode -1))
+
+(add-hook 'magit-mode-hook 'turn-off-linum)
+
 (provide 'hao-git)
 ;;; hao-git.el ends here
