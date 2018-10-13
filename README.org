@@ -28,5 +28,6 @@
 ** tint2
 
    #+BEGIN_SRC sh
+     pacman -S tint2
      ln -s $PWD/tint2rc ~/.config/tint2
    #+END_SRC
