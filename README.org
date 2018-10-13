@@ -13,7 +13,15 @@
 
 ** emacs
 
+   Install [[https://github.com/bbatsov/prelude][emacs-prelude]] first, simlink `prelude-modules.el`:
    #+BEGIN_SRC sh
+     ln -s $PWD/prelude-modules.el ~/.emacs.d/prelude-modules.el
+   #+END_SRC
+
+   Remove `personal` folder from `~/.emacs.d` and link this repo's
+   folder:
+   #+BEGIN_SRC sh
+     rm -r ~/.emacs.d/personal
      ln -s $PWD/.emacs.d ~/.emacs.d/personal
    #+END_SRC
 
