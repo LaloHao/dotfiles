@@ -10,7 +10,8 @@
    add-node-modules-path
    js2-refactor
    js-doc
-   flow-minor-mode))
+   flow-minor-mode
+   pug-mode))
 
 (with-no-warnings
   (require 'cl))
