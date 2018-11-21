@@ -105,9 +105,6 @@ Is equivalent to:
    ("C-x C-2" split-window-below)
    ("C-x C-3" split-window-right)))
 
-(defvar flyspell-default-dictionary)
-(setq flyspell-default-dictionary "es")
-
 (require 'prelude-helm-everywhere)
 
 (scroll-bar-mode)

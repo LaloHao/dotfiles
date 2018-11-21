@@ -7,14 +7,14 @@
 (run-shell-command "xset -b" t)
 (run-shell-command "xmodmap -e \"clear lock\"" t)
 (run-shell-command "xmodmap -e \"keycode 66 = F20\"" t)
-(run-shell-command "xrandr --output LVDS1 --auto --output HDMI1 --auto --above LVDS1 --primary")
-(run-shell-command "feh --bg-center /home/hao/Imágenes/arch-linux-an-dark.png")
+(run-shell-command "xrandr --output eDP-1 --auto --output HDMI-1 --auto --above eDP-1 --primary")
+(run-shell-command "feh --bg-center /home/hao/dev/dotfiles/arch.jpg")
 (run-shell-command "systemctl --user start emacs &")
 (run-shell-command "sleep 1.5 && xcompmgr &")
 (run-shell-command "sleep 2 && tint2 &")
 
-(define-key *top-map* (kbd "F11")   "exec amixer -D pulse sset Master 5%-")
-(define-key *top-map* (kbd "F12")   "exec amixer -D pulse sset Master 5%+")
+(define-key *top-map* (kbd "F11")   "exec amixer sset Master 5%-")
+(define-key *top-map* (kbd "F12")   "exec amixer sset Master 5%+")
 (define-key *top-map* (kbd "F10")          "exec amixer sset Master toggle")
 
 (define-key *top-map* (kbd "SunPrint_Screen")          "exec xfce4-screenshooter")

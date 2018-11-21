@@ -11,6 +11,7 @@
    js2-refactor
    js-doc
    flow-minor-mode
+   graphql-mode
    pug-mode))
 
 (with-no-warnings

@@ -1,4 +1,4 @@
-;;; hao-js.el --- javascript development config   -*- lexical-binding: t; -*-
+;;; hao-php.el --- php development config   -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -11,7 +11,7 @@
 
 (defun php-emmet-config ()
   "Configure php with emmet-mode."
-  (setq emmet-expand-jsx-className? nil)
+  (setq emmet-expand-phpx-className? nil)
   (setq emmet-self-closing-tag-style " /")
   (setq web-mode-markup-indent-offset 2)
   (emmet-mode))
@@ -21,5 +21,5 @@
 (delete '("\\.php\\'" . php-mode) auto-mode-alist)
 (add-to-list 'auto-mode-alist '("\\.php$" . web-mode))
 
-(provide 'hao-js)
-;;; hao-js.el ends here
+(provide 'hao-php)
+;;; hao-php.el ends here
