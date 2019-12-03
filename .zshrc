@@ -1,8 +1,8 @@
 export EDITOR=et
-export ZSH=/usr/share/oh-my-zsh
+export ZSH=/Users/lalo/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
-source /usr/share/zsh/share/antigen.zsh
+source /Users/lalo/dev/antigen.zsh
 antigen bundle git-prompt
 antigen bundle command-not-found
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -24,16 +24,5 @@ bindkey -M emacs '^N' history-substring-search-down
 bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 
-# function chpwd() {
-#     emulate -L zsh
-#     ls -a
-# }
 
-eval $(thefuck --alias)
 
-# function mkdir {
-#     command mkdir $1 && cd $1
-# }
-
-alias dl="youtube-dl -x --audio-format mp3"
-source /usr/share/nvm/init-nvm.sh
