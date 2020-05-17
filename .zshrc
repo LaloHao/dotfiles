@@ -1,3 +1,5 @@
+eval "$(direnv hook zsh)"
+
 export EDITOR=et
 export ZSH=/Users/lalo/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -23,6 +25,4 @@ bindkey -M emacs '^P' history-substring-search-up
 bindkey -M emacs '^N' history-substring-search-down
 bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
-
-
 
