@@ -1,0 +1,28 @@
+has-argument() {
+  local arg=$(printf '(^|\s+)%s(?=\s+|$)\n' "$1")
+  local args="${@:2}"
+  grep -qP "$arg" <<<"$args"
+}
+
+mkdir() {
+  local args=""
+  has-argument "-p" "$@" || has-argument "--parents" "$@"
+  if [[ $? == 0 ]]; then
+    echo "Create specified"
+  else
+    echo "create not specified"
+    # command mkdir "$@" --parents
+  fi
+}
+
+args() {
+  local _args=("$@")
+  for i in "${_args[@]}"; do
+    echo "$i"
+  done
+}
+
+# if [[ "$@" == *--parents* ]]; then
+#     command mkdir "$@"
+# else
+#     command

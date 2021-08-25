@@ -1,0 +1,42 @@
+diff --git a/default.nix b/default.nix
+new file mode 100644
+index 0000000..c67bbb5
+--- /dev/null
++++ b/default.nix
+@@ -0,0 +1,14 @@
++let
++ pkgs = import <nixpkgs> { };
++in
++pkgs.haskellPackages.callPackage ./package.nix {
++  mysqlclient = null;
++  inherit (pkgs) openssl;
++  inherit (pkgs) zlib;
++  inherit (pkgs) lib;
++  mysql_config = pkgs.mysql57;
++}
++# { pkgs ? import <nixpkgs> {  }}:
++# pkgs.haskellPackages.callCabal2nix "HDBC-mysql" ./. {
++#   mysqlclient = pkgs.mysql-client;
++# }
+diff --git a/package.nix b/package.nix
+new file mode 100644
+index 0000000..1b08774
+--- /dev/null
++++ b/package.nix
+@@ -0,0 +1,16 @@
++{ mkDerivation, base, bytestring, Cabal, HDBC, mysqlclient
++, openssl, time, utf8-string, zlib, lib, mysql_config
++}:
++mkDerivation {
++  pname = "HDBC-mysql";
++  version = "0.7.1.0";
++  src = ./.;
++  # sha256 = "1kx73pgh1mjg0526i2szk1kbm6d7bhbv64ml1y9nbja3lba8bjc1";
++  setupHaskellDepends = [ base Cabal ];
++  libraryHaskellDepends = [ base bytestring HDBC time utf8-string ];
++  librarySystemDepends = [ mysqlclient openssl zlib mysql_config ];
++  description = "MySQL driver for HDBC";
++  license = "LGPL";
++  hydraPlatforms = lib.platforms.none;
++  broken = true;
++}

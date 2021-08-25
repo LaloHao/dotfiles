@@ -1,0 +1,16 @@
+HISTTIMEFORMAT="%s "
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+function download {
+  youtube-dl -f best "$1"
+}
+
+function timestamp {
+  date +"%T" # Unix timestamp
+}
+
+# PS1="\n\[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] testing"
+
+bind '\C-l: clear-screen'
+bind '\C-p: previous-history'
+bind '\C-n: next-history'
