@@ -14,6 +14,7 @@
 
   home.packages = with pkgs; [
     xorg.xmodmap
+    (import ./kmonad.nix {})
   ];
 
   services.neo4j = {
