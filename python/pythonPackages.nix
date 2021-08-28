@@ -19,6 +19,7 @@ let
     # Estos paquetes colisionan entre si mismos
     # pip.pyqt5_with_qtmultimedia
     # pip.pyqt5_with_qtwebkit
+    pip.tqdm
     pip.lmdb
     pip.pyqt-builder
     pip.pyqtgraph
@@ -30,6 +31,8 @@ let
     pip.notebook
     pip.pytorchWithCuda
     pip.torchvision
+    # pip.torchaudio # broken or unexistant?
+    pip.seaborn
   ];
   python = pkgs.callPackage ./python.nix {
     inherit pythonPackages cudatoolkit cudnn nccl magma;

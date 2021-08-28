@@ -91,6 +91,18 @@
       '((:session . "ts")
         (:kernel . "tslab")))
 
+(setq org-babel-default-header-args:jupyter
+      '((:session . "py")
+        (:async . "yes")
+        (:results . "output replace")
+        (:kernel . "python")))
+
+(setq org-babel-default-header-args:python
+      '((:session . "py")
+        (:async . "yes")
+        (:results . "output replace")
+        (:kernel . "python")))
+
 (after! org-src
   (dolist (lang '(python jupyter))
     (cl-pushnew (cons (format "jupyter-%s" lang) lang)
