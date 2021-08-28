@@ -5,7 +5,6 @@
     ./emacs.nix
     ./xbindkeys.nix
     ./notifications.nix
-    ./compositor.nix
     ./python
     ./neo4j.nix
     ./development
