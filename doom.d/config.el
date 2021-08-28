@@ -105,5 +105,23 @@
 (setq python-indent 2)
 (setq python-indent-offset 2)
 
+(defun home-manager-switch ()
+  (interactive)
+  "Switch to current home-manager configuration"
+  (async-shell-command "home-manager switch"))
+
+(use-package! org-ref
+  :config
+  (setq
+   org-ref-bibliography-notes     "~/notes/bibliography.org"
+   org-ref-default-bibliography '("~/lib/references.bib")
+   org-ref-pdf-directory          "~/lib/"))
+
+(after! org-ref
+  (use-package! doi-utils)
+  (use-package! org-ref-pdf)
+  (use-package! org-ref-url-utils)
+  (use-package! x2bib)
+  )
 (provide 'config)
 ;;; config.el ends here

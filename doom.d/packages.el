@@ -36,6 +36,8 @@
 
 (package! edit-server)
 
+(package! org-ref)
+
 ;; (package! atomic-chrome)
 
 (provide 'packages)
