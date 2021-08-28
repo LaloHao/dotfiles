@@ -33,6 +33,12 @@ let
     pip.torchvision
     # pip.torchaudio # broken or unexistant?
     pip.seaborn
+    pip.pyglet
+    pip.pyopencl
+    pip.pyopengl
+    pip.pyopengl-accelerate
+    pip.gym
+    pip.gym-super-mario-bros
   ];
   python = pkgs.callPackage ./python.nix {
     inherit pythonPackages cudatoolkit cudnn nccl magma;
@@ -43,5 +49,6 @@ in {
     pkgs.qt5.full
     pkgs.qtcreator
     pkgs.conda
+    pkgs.libGLU # required for opengl
   ];
 }

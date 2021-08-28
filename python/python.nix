@@ -17,6 +17,8 @@ let
         pytorch = pytorchWithCuda;
         inherit cudatoolkit cudnn;
       });
+      nes-py = self.callPackage ./nes-py.nix { };
+      gym-super-mario-bros = self.callPackage ./gym-super-mario-bros.nix {};
     }; in pkgs.python3.override {
       inherit packageOverrides; self = python;
     };
