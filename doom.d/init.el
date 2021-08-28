@@ -84,7 +84,7 @@
         +childframe)
        (spell            ;; Spell checking
         ;; +aspell
-        ;; +flyspell
+        +flyspell
         +enchant
         +everywhere
         ;; +hunspell
