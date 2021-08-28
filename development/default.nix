@@ -2,5 +2,6 @@
 {
   imports = [
     ./c.nix
+    ./haskell.nix
   ];
 }

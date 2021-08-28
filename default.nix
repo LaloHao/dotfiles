@@ -9,7 +9,7 @@
     ./python
     ./neo4j.nix
     ./development
-    # ./window-manager.nix
+    ./graphics
   ];
 
   home.packages = with pkgs; [
