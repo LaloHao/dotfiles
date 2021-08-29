@@ -133,7 +133,14 @@
   (use-package! doi-utils)
   (use-package! org-ref-pdf)
   (use-package! org-ref-url-utils)
-  (use-package! x2bib)
-  )
+  (use-package! x2bib))
+
+(after! ispell
+  :config
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "en_US,es_MX")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,es_MX"))
+
 (provide 'config)
 ;;; config.el ends here

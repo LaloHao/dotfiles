@@ -85,9 +85,9 @@
        (spell            ;; Spell checking
         ;; +aspell
         +flyspell
-        +enchant
+        ;; +enchant
         +everywhere
-        ;; +hunspell
+        +hunspell
         )
        grammar           ; tasing grammar mistake every you make
 

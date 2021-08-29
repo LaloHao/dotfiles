@@ -19,6 +19,7 @@ let
       };
     };
   };
+  inherit (import ./packages/dictionaries { }) es_MX;
 in {
   # Allow searching for fonts
   fonts.fontconfig.enable = true;
@@ -46,13 +47,13 @@ in {
       es                         # spanish
     ]))
     # hunspell
-    (hunspellWithDicts (with hunspellDicts; [
-      en_US                      # english
+    (hunspellWithDicts [
+      hunspellDicts.en_US                      # english
                                  # also see: en_US-large
       es_MX
-    ]))
+    ])
     # enchant
-    enchant
+    # enchant # can't use multidict
 
     # Required for :checkers grammar
     languagetool
