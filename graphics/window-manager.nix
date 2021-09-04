@@ -1,16 +1,16 @@
 { config, lib, pkgs, ... }:
-
-{
+let
+  unstable = import <unstable> { config.allowUnfree = true; };
+in {
   xsession = {
     enable = true;
 
     windowManager.xmonad = {
       enable = true;
       enableContribAndExtras = true;
-      extraPackages = hp: [
-        hp.dbus
-        hp.monad-logger
-        hp.xmonad-contrib
+      haskellPackages = unstable.haskellPackages;
+      extraPackages = haskellPackages: with haskellPackages; [
+        (import ../development/haskell/haskellPackages.nix { inherit haskellPackages; })
       ];
     };
   };
