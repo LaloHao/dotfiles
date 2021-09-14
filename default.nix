@@ -1,19 +1,26 @@
 { config, lib, pkgs, ... }:
-{
+let
+  kmonad = import ./kmonad.nix {};
+in {
   imports = [
     ./bash
     ./emacs.nix
-    ./xbindkeys.nix
     ./notifications.nix
     ./python
     ./neo4j.nix
     ./development
     ./graphics
+    # ~/dev/x11/kmonad/nix/nixos-module.nix # does not work with home-manager
   ];
 
   home.packages = with pkgs; [
     xorg.xmodmap
-    (import ./kmonad.nix {})
+    kmonad
+    scrot
+    wireshark
+    tesseract4
+    google-fonts
+    texlive.combined.scheme-full
   ];
 
   services.neo4j = {
