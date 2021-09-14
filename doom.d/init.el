@@ -175,9 +175,11 @@
        (python
         +cython
         +lsp
-        +pyenv
+        ;; +pyright ;; disable this so pylsp can woek
+        ;; +pyenv
         +conda
-        +poetry)
+        ;; +poetry
+        )
        qt
        (racket
         +lsp

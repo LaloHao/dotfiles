@@ -38,6 +38,17 @@
 
 (package! org-ref)
 
+(package! org-html-themify)
+(package! hexrgb)
+(package! htmlize)
+(package! dash)
+(package! s)
+(package! indium)
+(package! websocket)
+(package! ov)
+(package! orglink)
+(package! graphviz-dot-mode)
+
 ;; (package! atomic-chrome)
 
 (provide 'packages)

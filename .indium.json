@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "name": "Google chrome",
+      "type": "chrome",
+      "host": "localhost",
+      "url": "http://localhost:9022/json",
+      "port": 9022
+    }
+  ]
+}
