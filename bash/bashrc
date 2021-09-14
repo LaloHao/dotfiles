@@ -1,3 +1,9 @@
+export EDITOR="emacsclient -nw"
+export VISUAL=$EDITOR
+export LESS='-X -r' # `-r` interpret colors
+                    # `-X` leave output on screen
+                    #      after exiting
+
 HISTTIMEFORMAT="%s "
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
@@ -14,3 +20,4 @@ function timestamp {
 bind '\C-l: clear-screen'
 bind '\C-p: previous-history'
 bind '\C-n: next-history'
+bind '\C-w: backward-kill-word'

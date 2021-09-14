@@ -3,6 +3,7 @@ let
   inherit (builtins) readFile;
 in {
   imports = [
+    ./alias.nix
     ./direnv.nix
     ./powerline.nix
   ];
@@ -36,14 +37,6 @@ in {
   # Environment variables that will be set for the Bash session.
   programs.bash.sessionVariables = {
     XDG_DATA_DIRS = ''$HOME/.nix-profile/share:$HOME/.share:"''${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"'';
-  };
-
-  # An attribute set that maps aliases (the top level attribute names in this option) to command strings or directly to build outputs.
-  programs.bash.shellAliases = {
-    dl = "download";
-    open = "xdg-open";
-    clip = "xclip -sel clip";
-    ".." = "cd ..";
   };
 
   # Shell options to set.
