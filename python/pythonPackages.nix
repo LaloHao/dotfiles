@@ -12,11 +12,14 @@ let
     pip.matplotlib
     pip.numpy
     pip.scikitimage
+    pip.scikitlearn
     pip.pillow
+    pip.Keras
     pip.snakeviz
     pip.pytesseract
     pip.pillow
     # Estos paquetes colisionan entre si mismos
+    pip.pyqt5.dev
     # pip.pyqt5_with_qtmultimedia
     # pip.pyqt5_with_qtwebkit
     pip.tqdm
@@ -38,8 +41,38 @@ let
     pip.pyopengl
     pip.pyopengl-accelerate
     pip.gym
-    pip.gym-super-mario-bros
+    # pip.gym-super-mario-bros
+    pip.visdom
+    pip.pytesseract
+
+    # required for :lang python
+    pip.pytest
+    pip.nose
+    pip.black
+    pip.pyflakes
+    pip.isort
+    pip.librosa
+    pip.sounddevice
+    pip.soundfile
+    pip.multiprocess
+    pip.numba
+    pip.audioread
+    pip.umap-learn
+    pip.unidecode
+    pip.webrtcvad
+    pip.inflect
+    pip.pypdf3
+    pip.googletrans
+    pip.boto3
+    # pip.ghostscript
+    (pip.tesserocr.override {
+      tesseract = pkgs.tesseract4;
+    })
+
+    # pip.poetry
+    # pip.deep-translator
   ];
+  # ] ++ (pkgs.poetry2nix.mkPoetryPackages { projectDir = "."; }).poetryPackages;
   python = pkgs.callPackage ./python.nix {
     inherit pythonPackages cudatoolkit cudnn nccl magma;
   };
@@ -50,5 +83,6 @@ in {
     pkgs.qtcreator
     pkgs.conda
     pkgs.libGLU # required for opengl
+    pkgs.libsndfile
   ];
 }

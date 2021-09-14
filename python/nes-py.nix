@@ -30,6 +30,14 @@ buildPythonPackage rec {
   # The test needs MuJoCo that is not free library.
   doCheck = false;
 
+  # does not works
+  strictDepts = false;
+
+  # does not works either
+  # patchPhase = ''
+  #   substituteInPlace requirements.txt \
+  #    --replace "<=1.5.11," ""
+  # '';
   pythonImportsCheck = [ "nes_py" ];
 
   meta = with lib; {
