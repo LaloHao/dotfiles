@@ -1,35 +1,50 @@
 (defcfg
-  fallthrough true)
   input (device-file "/dev/input/SEMI")
   output (uinput-sink "KMonad" "/home/hao/.nix-profile/bin/sleep 3 && /run/current-system/sw/bin/setxkbmap -option compose:ralt")
+  fallthrough true
+  allow-cmd true)
 
-;;Default layer
 (defsrc
-    esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  ssrq ins del home end pgup pgdn
-    grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc         nlck kp/ kp*  kp-
-    tab  q    w    e    r    t    y    u    i    o    p    [    ]    \            kp7  kp8 kp9  kp+
-    caps a    s    d    f    g    h    j    k    l    ;    '         ret          kp4  kp5 kp6
-    lsft z    x    c    v    b    n    n    m    ,    .    /    rsft  up          kp1  kp2 kp3  kprt
-    lctl lmet lalt          spc                  ralt rmet rctl left down  right  kp0  kp.)
+    esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq pause slck
+    grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup  nlck kp/  kp*  kp-
+    tab  q    w    e    r    t    y    u    i    o    p    [    ]    \     del  end  pgdn  kp7  kp8  kp9  kp+
+    caps a    s    d    f    g    h    j    k    l    ;    '    ret                        kp4  kp5  kp6
+    lsft z    x    c    v    b    n    m    ,    .    /    rsft                 up         kp1  kp2  kp3  kprt
+    lctl lmet lalt           spc            ralt rmet menu rctl           left down right  kp0  kp.
+)
 
-#| Blank layer template
-(deflayer name
-    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _   _   _    _   _    _
-    _    _    _    _    _    _    _    _    _    _    _    _    _    _            _    _   _    _
-    _    _    _    _    _    _    _    _    _    _    _    _    _    _            _    _   _    _
-    _    _    _    _    _    _    _    _    _    _    _    _         _            _    _   _
-    _    _    _    _    _    _    _    _    _    _    _    _    _    _            _    _   _    _
-    _    _    _             _                    _    _    _    _    _     _      _    _  )
-|#
+(defalias fn (around (layer-toggle function) rmet))
 
 (defalias spc (tap-hold 200 spc lmet))
 (defalias
   mt  (multi-tap 300 a 300 b 300 c 300 d e))
 
+(defalias
+  lp    (cmd-button "true")
+  bldn  (cmd-button "true")
+  blup  (cmd-button "true")
+  prev  (cmd-button "true")
+  pp    (cmd-button "true")
+  next  (cmd-button "true")
+  mute  (cmd-button "true")
+  vold  (cmd-button "true")
+  volu  (cmd-button "true")
+  )
+
 (deflayer default
-    esc   f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  ssrq ins del home end pgup pgdn
-    grv   1    2    3    4    5    6    7    8    9    0    -    =    bspc         nlck kp/ kp*  kp-
-    tab   q    w    e    r    t    y    u    i    o    p    [    ]    \            kp7  kp8 kp9  kp+
-    caps  a    s    d    f    g    h    j    k    l    ;    '         ret          kp4  kp5 kp6
-    lsft  z    x    c    v    b    n    n    m    ,    .    /    rsft  up          kp1  kp2 kp3  kprt
-    lctl  lmet lalt         @spc                  ralt rmet rctl left down  right  kp0  kp.           )
+    _    brdn brup @lp  _ @bldn @blup @prev @pp   @next @mute @vold @volu       _    _    _
+    _    _    _    _    _    _    _    _    _    _    _    -    =    _     _    _    _     _    _    _    _
+    _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+    _    _    _    _    _    _    _    _    _    _    _    _    _                          _    _    _
+    _    _    _    _    _    _    _    _    _    _    _         _               _          _    _    _    _
+    _    _    _             @spc            _   @fn   _         _          _    _    _     _    _
+)
+
+(deflayer function
+    _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        _    _    _
+    _    _    _    _    _    _    _    _    _    _    _    -    =    _     _    _    _     _    _    _    _
+    _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+    _    _    _    _    _    _    _    _    _    _    _    _    _                          _    _    _
+    _    _    _    _    _    _    _    _    _    _    _         _               _          _    _    _    _
+    _    _    _              _              _    _    _         _          _    _    _     _    _
+)
