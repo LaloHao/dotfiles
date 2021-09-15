@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  kmonad = import ./kmonad.nix {};
+  # kmonad = pkgs.callPackage ./kmonad.nix {};
 in {
   imports = [
     ./bash
@@ -12,11 +12,20 @@ in {
     ./graphics
     # ~/dev/x11/kmonad/nix/nixos-module.nix # does not work with home-manager
     ./packages
+    ./keyboard
   ];
+
+  services.kmonad = {
+    enable = true;
+    devices = {
+      "K480" = ./keyboard/wireless.kbd;
+      "SEMI" = ./keyboard/mechanical.kbd;
+    };
+  };
 
   home.packages = with pkgs; [
     xorg.xmodmap
-    kmonad
+    # kmonad
     scrot
     wireshark
     tesseract4

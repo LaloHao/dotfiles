@@ -1,7 +1,7 @@
 (defcfg
-  input (device-file "/dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-event-kbd")
-  output (uinput-sink "KMonad" "/home/hao/.nix-profile/bin/sleep 1 && /run/current-system/sw/bin/setxkbmap -option compose:ralt")
   fallthrough true)
+  input (device-file "/dev/input/SEMI")
+  output (uinput-sink "KMonad" "/home/hao/.nix-profile/bin/sleep 3 && /run/current-system/sw/bin/setxkbmap -option compose:ralt")
 
 ;;Default layer
 (defsrc

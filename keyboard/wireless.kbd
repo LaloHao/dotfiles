@@ -1,6 +1,6 @@
 (defcfg
-  input (device-file "/dev/input/event30")
-  output (uinput-sink "KMonad" "/home/hao/.nix-profile/bin/sleep 1 && /run/current-system/sw/bin/setxkbmap -option compose:ralt")
+  input (device-file "/dev/input/K480")
+  output (uinput-sink "Wireless" "/home/hao/.nix-profile/bin/sleep 3 && /run/current-system/sw/bin/setxkbmap -option compose:ralt")
   fallthrough true)
 
 ;;Default layer
