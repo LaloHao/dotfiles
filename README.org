@@ -1,33 +1,38 @@
-* Archivos de configuración
-** zsh
+* Archivos de configuración (dotfiles)
+** Disclaimer
+#+begin_quote
+La mayoría sino todos los archivos contenidos aquí están hechos para utilizarse
+dentro del contexto de =Nix=.
+#+end_quote
 
-   #+BEGIN_SRC sh
-     ln -s $PWD/.zshrc ~/.zshrc
-   #+END_SRC
+Eso no significa que no haya sido concebido fuera de el y recopilado para un
+mejor *ab*/uso/.
 
-** stumpwm
+/Quedas advertido./
 
-   #+BEGIN_SRC sh
-     ln -s $PWD/.stumpwmrc ~/.stumpwmrc
-   #+END_SRC
+* Usage
+1. Instala =home-manager=
+2. Importa los archivos en tu configuración:
 
-** emacs
+=~/.config/nixpkgs/home.nix=
+#+begin_src nix
+{ config, pkgs, ... }:
+{
+  imports = [
+    /home/hao/dev/dotfiles
+  ];
+}
+#+end_src
 
-   Install [[https://github.com/bbatsov/prelude][emacs-prelude]] first, simlink `prelude-modules.el`:
-   #+BEGIN_SRC sh
-     ln -s $PWD/prelude-modules.el ~/.emacs.d/prelude-modules.el
-   #+END_SRC
+Eso es todo.
+* TODO Modulos
+** TODO bash
+*** TODO aliases
+*** TODO powerline
 
-   Remove `personal` folder from `~/.emacs.d` and link this repo's
-   folder:
-   #+BEGIN_SRC sh
-     rm -r ~/.emacs.d/personal
-     ln -s $PWD/.emacs.d ~/.emacs.d/personal
-   #+END_SRC
+** TODO window manager
+*** TODO xmonad
+*** TODO kmonad
 
-** tint2
-
-   #+BEGIN_SRC sh
-     pacman -S tint2
-     ln -s $PWD/tint2rc ~/.config/tint2
-   #+END_SRC
+** TODO emacs
+*** TODO doom emacs
