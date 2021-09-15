@@ -276,5 +276,8 @@ Ignore `_BACKEND'."
 (setq search-default-mode 'char-fold-to-regexp)
 (setq char-fold-symmetric t)
 
+(use-package! visual-regexp)
+(use-package! visual-regexp-steroids)
+
 (provide 'config)
 ;;; config.el ends here

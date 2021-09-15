@@ -49,7 +49,8 @@
 (package! orglink)
 (package! graphviz-dot-mode)
 
-;; (package! atomic-chrome)
+(package! visual-regexp)
+(package! visual-regexp-steroids)
 
 (provide 'packages)
 ;;; packages.el ends here
