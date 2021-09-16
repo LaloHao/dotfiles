@@ -12,5 +12,6 @@
     open = "xdg-open";
     clip = "xclip -sel clip";
     # mv = "rsync -avzh --delete-source"; # nope
+    feh = "feh --scale-down --auto-rotate --auto-zoom --reverse";
   };
 }
