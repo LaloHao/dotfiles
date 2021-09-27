@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./window-manager.nix
   ];
 
   home.packages = [

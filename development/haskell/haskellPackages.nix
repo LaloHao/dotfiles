@@ -1,5 +1,6 @@
 { haskellPackages }:
 haskellPackages.ghcWithHoogle(p: with p; [
+  transformers
   text
   lens
   dbus

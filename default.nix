@@ -10,6 +10,7 @@ in {
     ./neo4j.nix
     ./development
     ./graphics
+    ./window-manager
     # ~/dev/x11/kmonad/nix/nixos-module.nix # does not work with home-manager
     ./packages
     ./keyboard
