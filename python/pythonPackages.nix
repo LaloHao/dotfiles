@@ -69,7 +69,8 @@ let
       tesseract = pkgs.tesseract4;
     })
 
-    # pip.poetry
+    pip.dbus-python
+    pip.notify-send.py
     # pip.deep-translator
   ];
   # ] ++ (pkgs.poetry2nix.mkPoetryPackages { projectDir = "."; }).poetryPackages;

@@ -53,6 +53,8 @@ let
       pytesseract = super.pytesseract.override {
         tesseract = pkgs.tesseract4;
       };
+      pygobject = self.pygobject3;
+      notify-send.py = self.toPythonModule (self.callPackage ./notify-send.nix { });
     }; in
     # (pkgs.poetry2nix.mkPoetryPackages {
     #   projectDir = "/home/hao/dev/dotfiles/python";
