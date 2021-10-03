@@ -101,8 +101,12 @@
   (advice-add 'org-journal-new-date-entry :around #'with-spanish-locale)
   (advice-add 'org-journal-new-scheduled-entry :around #'with-spanish-locale))
 
-(after! (orglink ol-info)
-  (global-orglink-mode))
+(progn ;; Use global links in emacs
+  (use-package! orglink)
+  (use-package! ol-info)
+
+  (after! (orglink ol-info)
+    (global-orglink-mode)))
 
 (after! (simple rainbow-mode)
   (add-hook 'fundamental-mode-hook #'rainbow-mode)
@@ -134,24 +138,173 @@
         ;; (:kernel . "python")
         ))
 
+(defun pairp (pair)
+  "Return `t' if `PAIR' is a dotted pair, otherwise `NIL'.
+
+Example:
+  (pairp '1) => nil
+  (pairp '(1)) => nil
+  (pairp '(1 2)) => nil
+
+  (pairp '(1 . 2)) => t
+
+  (pairp '(1 . ())) => nil
+
+Notes:
+  (pairp '(1 . (2 3))) => nil
+ ^ Since '(1 . (2 3)) actually means '(1 2 3)
+
+  (pairp '(1 . (2 . 3))) => nil
+ ^ Since '(1 . (2 . 3)) actually means '(1 2 . 3)
+"
+  (and (listp pair) (not (listp (cdr pair)))))
+
+(defun org-babel-add-language (lang &optional load)
+  "Add the language `LANG' to `org-babel'.
+
+Optionally if `LOAD' then loads the language now."
+  (let ((lang (cons lang t)))
+    (add-to-list 'org-babel-load-languages lang)
+    (when load
+      (org-babel-load-language lang)))
+  lang)
+
+(defun org-babel-load-language (lang)
+  "Load the language `LANG' in `org-babel'."
+  (let ((lang (cons lang t)))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     (append org-babel-load-languages (list lang)))))
+
+(use-package! cl-format)
+
+(defun org-babel--format-header-args (args)
+  "Returns a string containing formatted `ARGS' for use in SRC blocks.
+
+Example
+  If FORMATTED-ARGS is the result of evaluating
+    (org-babel-format-header-args org-babel-default-header-args:emacs-lisp)
+
+  Then you can replace it and obtain a valid header as:
+
+  #+begin_src elisp FORMATTED-ARGS
+  ...
+  #+end_src
+"
+  (cl-format nil "~{~{~s ~a~}~^ ~}"  args))
+
+(defun org-babel--default-header-args-symbol (&optional lang)
+  "`LANG'."
+  (let* ((lang-string (cl-format nil "~@[~a~]" lang))
+         (alias-for-lang (alist-get lang-string org-src-lang-modes nil nil #'equal))
+         (format-string "~a~^~@[:~*~#[~:;~^~:[~:*~;~]~]~:*~a~]"))
+    (cl-format nil format-string "org-babel-default-header-args" lang alias-for-lang)))
+
+;; (let ((s "babel~^~@[:~*~#[~:;~^~:[~:*~;~]~]~]~:*~a"))
+;;   (values
+;;    (cl-format nil s)
+;;    (cl-format nil s 'left)
+;;    (cl-format nil s 'left 'right)
+;;    (cl-format nil s 'left nil)))
+
+;; (org-babel--default-header-args-symbol)
+;; (org-babel--default-header-args-symbol 'elisp)
+;; (org-babel--default-header-args-symbol 'elis)
+
+(defun org-babel-default-header-args-symbol (&optional lang)
+  "`LANG'."
+  (intern-soft (org-babel--default-header-args-symbol lang)))
+
+(defun org-babel--default-header-args (&optional lang)
+  "`LANG'."
+  (symbol-value (org-babel-default-header-args-symbol lang)))
+
+(defun org-babel-default-header-args (&optional lang)
+  "`LANG'."
+  (org-babel-combine-header-arg-lists
+   (org-babel--default-header-args)
+   (and lang (org-babel--default-header-args lang))))
+
+;; (let ((header-args (org-babel-default-header-args 'elisp))
+;;       (as '(:lexical)))
+;;   (loop for header in header-args
+;;         for (h . a) = header
+;;         when (member h as)
+;;         collect header))
+
+;; (let ((h (org-babel-default-header-args 'elisp))
+;;       (as '(:lexical :exports))
+;;       (-compare-fn (-lambda ((h) a) (equalp a h))))
+;;   (-intersection h as))
+
+(defvar org-babel-format-header-args '(:exports)
+  "Default header args to insert on expanded org src headers.")
+
+(defun org-babel-format-header-args (lang)
+  "`LANG'."
+  (let ((h (org-babel-default-header-args lang))
+        (as org-babel-format-header-args)
+        (-compare-fn (-lambda ((h) a) (equalp a h))))
+    (org-babel--format-header-args (-intersection h as))))
+
+;; (org-babel-format-header-args 'elisp)
+;; (org-babel-format-header-args 'shell)
+
+(defun with-cl-format (f s &rest a)
+  (if (stringp s)
+      (apply f s a)
+    (apply #'cl-format s a)))
+
+(advice-add 'format :around 'with-cl-format)
+
+;; (advice-remove 'format 'with-cl-format)
+
+;; (values
+;;  (format "%s" "test")
+;;  (format nil "~a" "test"))
+
+(defun yas-choose-org-src ()
+  "."
+  (let* ((lang (yas-choose-value (org-babel-load-languages)))
+         (header-args (org-babel-format-header-args lang)))
+    (cl-format nil "~a ~a" lang header-args)))
+
+(cl-defun org-babel-load-languages (&optional (do-load nil))
+  "Prints `org-babel-load-languages' and load them if `DO-LOAD'."
+  (prog1 (-map #'car org-babel-load-languages)
+    (when do-load
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       org-babel-load-languages))))
+
+;; (org-babel-load-languages)
+
 (after! org-src
-  (dolist (lang '(python jupyter))
-    (cl-pushnew (cons (format "jupyter-%s" lang) lang)
-                org-src-lang-modes :key #'car))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (typescript . t)
-     (python . t)
-     (jupyter . t))))
+  (org-babel-add-language 'emacs-lisp)
+  (org-babel-add-language 'typescript)
+  (org-babel-add-language 'python)
+  (org-babel-add-language 'jupyter)
+  (org-babel-load-languages)
+
+  (defalias 'org-babel-alias-language 'org-babel-make-language-alias)
+  (org-babel-alias-language "jupyter-python" "python")
+  (org-babel-alias-language "jupyter-jupyter" "jupyter"))
+
+
+;; (after! org-src
+;;   (dolist (lang '(python jupyter))
+;;     (cl-pushnew (cons (format "jupyter-%s" lang) lang)
+;;                 org-src-lang-modes :key #'car))
+;;   (org-babel-do-load-languages
+;;    'org-babel-load-languages
+;;    (append org-babel-load-languages
+;;     '((emacs-lisp . t)
+;;      (typescript . t)
+;;      (python . t)
+;;      (jupyter . t)))))
 
 (setq python-indent 2)
 (setq python-indent-offset 2)
-
-(defun home-manager-switch ()
-  (interactive)
-  "Switch to current home-manager configuration"
-  (async-shell-command "home-manager switch"))
 
 (use-package! org-ref
   :config
@@ -178,17 +331,8 @@
 ;;   (setq lisp-indent-offset 2))
 
 (setq org-babel-default-header-args
-    '((:noweb    . "no")
-      (:session  . "none")
-      (:results  . "replace drawer")
-      ;; (:results  . "output replace drawer")
-      ;; (:results  . "output verbatim replace drawer")
-      (:exports  . "both")
-      (:cache    . "no")
-      (:hlines   . "no")
-      (:tangle   . "no")
-      ;; (:post     . )
-       ))
+    '((:results  . "replace verbatim")
+      (:exports  . "both")))
 
 (after! org-mode
   (use-package! org-html-themify)
@@ -207,6 +351,10 @@
     :foreground "#dbe5e5"
     :weight 'bold))
 
+(use-package! alert
+  :config
+  (alert-add-rule :status '(buried)))
+
 (after! ob-exp ;; fucker deleted all my work when exporting
   :config ;; reran all the code
   (setq org-export-use-babel nil)
@@ -223,14 +371,15 @@
 ;;   (map! :leader :desc "Switch to last buffer"))
 
 (map! :leader :desc "Delete other windows" :n "1" #'delete-other-windows)
+(map! :desc "Async shell command" :n "M-!" #'async-shell-command)
 
 ;; (after! company
 ;;   (defun good-completion (&rest ignore)
 ;;     (completion-at-point))
 ;;   (advice-add 'company-complete-common :around 'good-completion))
 (setq spanish-calendar-week-start-day 1
-      spanish-calendar-day-name-array ["domingo" "lunes" "martes" "miércoles"
-                                       "jueves" "viernes" "sábado"]
+      spanish-calendar-day-name-array ["domingo" "lunes" "martes" "miercoles"
+                                       "jueves" "viernes" "sabado"]
       spanish-calendar-month-name-array ["enero" "febrero" "marzo" "abril" "mayo"
                                          "junio" "julio" "agosto" "septiembre"
                                          "octubre" "noviembre" "diciembre"])
@@ -278,6 +427,20 @@ Ignore `_BACKEND'."
 
 (use-package! visual-regexp)
 (use-package! visual-regexp-steroids)
+
+(after! typescript-mode
+  (defun ts-compile-current-file (&optional dir)
+    (let* ((ts (file-name-nondirectory buffer-file-name))
+           (js (format "%s.js" (file-name-sans-extension ts))))
+      (format "tsc --outFile %s %s" js ts)))
+
+  (defun ts-compile-functions-setup ()
+    (add-to-list 'counsel-compile-local-builds 'ts-compile-current-file))
+
+  (add-hook! 'typescript-mode-hook #'ts-compile-functions-setup))
+
+;; https://books.google.com.mx/books?id=9apQfCRhvm0C&pg=PA230&lpg=PA230&dq=lisp+format+separate+space&source=bl&ots=UgJQLHr_de&sig=ACfU3U0xTSZf2WUoRvr2Npo-BI8I5AEuHw&hl=en&sa=X&ved=2ahUKEwj4gq2slKvzAhUEk2oFHYMKAd8Q6AF6BAgZEAM#v=onepage&q=lisp%20format%20separate%20space&f=false
+;; (format nil "|~{~<a~%b~,33:;~2d ~>~}|" (loop for x below 100 collect x))
 
 (provide 'config)
 ;;; config.el ends here

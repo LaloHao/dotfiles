@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: #+begin_src
+# uuid: src
+# key: src
+# --
+#+begin_src `(yas-choose-org-src)`
+`%`$0
+#+end_src

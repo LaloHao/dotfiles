@@ -51,6 +51,8 @@
 
 (package! visual-regexp)
 (package! visual-regexp-steroids)
+(package! cl-format)
+(package! snippets)
 
 (provide 'packages)
 ;;; packages.el ends here

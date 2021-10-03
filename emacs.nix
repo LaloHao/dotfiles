@@ -10,11 +10,16 @@ let
       '':files (${pkgs.lib.strings.concatMapStringsSep " " (x: "\"${x}\"") args.files})''
     else
       "";
-  mkPackage = { name, repo, sha256, self, ... }@args: self.straightBuild {
+  providers = {
+    "github" = "https://github.com";
+    "gitlab" = "https://gitlab.com";
+  };
+  fromProvider = p: providers."${p}";
+  mkPackage = { name, repo, provider ? "github", sha256, self, ... }@args: self.straightBuild {
     pname = name;
     src = pkgs.fetchgit {
       inherit sha256;
-      url = "https://github.com/${repo}";
+      url = "${fromProvider provider}/${repo}";
     };
     buildPhase = ":";
     installPhase = ''
@@ -28,7 +33,7 @@ let
       :fetcher github
       ${genFiles(args)})
     '';
-  };
+  } // args;
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
     url = "https://github.com/vlaci/nix-doom-emacs/archive/201e023c671c50c0ee2efe5ca11143161166a736.tar.gz";
     sha256 = "0a9df4sg9bq13zvd6cgc1qidmzd9lll55fx25d9frm5fl7jrn561";
@@ -37,6 +42,18 @@ let
     emacsPackagesOverlay = self: super:
       let mkPackage' = args: mkPackage (args // { inherit self; });
       in {
+        cl-format = mkPackage' {
+          provider = "gitlab";
+          name = "cl-format";
+          repo = "akater/elisp-cl-format";
+          sha256 = "10z53j111wvgy0fbnxm3mpc9an75dblvy5zkq9733vjliycbbgv4";
+        };
+        snippets = self.trivialBuild rec {
+          pname = "snippets";
+          ename = pname;
+          src = ./development/emacs/snippets;
+          files = [ "**/*" ];
+        };
         org-roam-ui = self.trivialBuild {
           pname = "org-roam-ui";
           ename = "org-roam-ui";
