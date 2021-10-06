@@ -14,6 +14,7 @@ in {
     # ~/dev/x11/kmonad/nix/nixos-module.nix # does not work with home-manager
     ./packages
     ./keyboard
+    ./media.nix
   ];
 
   services.kmonad = {
