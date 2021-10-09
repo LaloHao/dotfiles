@@ -26,5 +26,10 @@ in {
       ];
     };
   };
-  home.file.".xmonad/xmonad.hs".source = ./xmonad.hs;
+  home.file.".xmonad/xmonad.hs" = {
+    source = ./xmonad.hs;
+    onChange = ''
+      ${config.xsession.windowManager.command} --recompile
+    '';
+  };
 }
