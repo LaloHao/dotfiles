@@ -95,7 +95,7 @@ main = do
   xmobar     <- spawnPipe "xmobar ~/.xmobarrc"
   -- kbd1       <- spawnPipe "kmonad ~/dev/dotfiles/keyboard/mechanical.kbd"
   -- kbd2       <- spawnPipe "kmonad ~/dev/dotfiles/keyboard/wireless.kbd"
-  picom      <- spawnPipe "picom"
+  picom      <- spawnPipe "picom --config /dev/null"
   hSetBuffering xmobar (BlockBuffering (Just 1024))
   xmonad $ docks $ config xmobar
 
