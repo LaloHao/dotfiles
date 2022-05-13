@@ -28,6 +28,8 @@
 
 (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 
+(defalias 'bind 'destructuring-bind)
+
 (setq-default web-mode-sql-indent-offset 2)
 (setq-default web-mode-attr-indent-offset 2)
 (setq-default web-mode-markup-indent-offset 2)
@@ -45,6 +47,38 @@
 (use-package! nixos-options)
 (use-package! graphql-mode)
 (use-package! poly-ein)
+
+;; Two ways of defining the same function
+;; See [1] and [2]
+;;
+;; [1] (cl-defun cons* (list &key (null t))
+;;       (and (consp list)
+;;            (consp (rest list))
+;;            (bind (first second . rest) list
+;;             (bind element (cons first second)
+;;               (cond
+;;                (second     (cons element (cons* rest)))
+;;                (null       (cons element (cons* rest)))
+;;                (t                        (cons* rest)))))))
+;;
+;; [2] (cl-defun cons* (list &key (null t))
+;;       (and (consp list)
+;;            (consp (rest list))
+;;            (bind (first second . rest) list
+;;             (bind element (cons first second)
+;;               (if (-all? #'null (list second (not null)))
+;;                   (cons* rest)
+;;                 (cons element (cons* rest :null null)))))))
+
+;; Decided to leave it simple and filter manually
+;; (-filter #'rest (cons* '(k1 v1 k2 nil)))
+(defun cons* (list)
+  (and (consp list)
+       (consp (rest list))
+       (cons (cons (first list) (second list))
+             (cons* (rest (rest list))))))
+
+;; (cons* '(k1 v1 k2 v2))
 
 (after! ox
   (use-package! ox-extra
@@ -77,7 +111,7 @@
 (use-package! edit-server
   :config
   (setq edit-server-new-frame-alist nil)
-  (add-hook 'edit-server-done-hook '(lambda () (kill-ring-save (point-min) (point-max))))
+  (add-hook 'edit-server-done-hook '#(lambda () (kill-ring-save (point-min) (point-max))))
   (edit-server-start))
 
 (defun with-spanish-locale (f &rest a)
@@ -112,31 +146,6 @@
   (add-hook 'fundamental-mode-hook #'rainbow-mode)
   (add-hook 'prog-mode-hook #'rainbow-mode)
   (add-hook 'text-mode-hook #'rainbow-mode))
-
-(setq org-babel-default-header-args:jupyter-typescript
-      '((:session . "ts")
-        (:kernel . "tslab")))
-
-(setq org-babel-default-header-args:jupyter-python
-      '((:session . "jupyter")
-        (:async . "yes")
-        (:results . "value replace")
-        (:kernel . "python")
-        ))
-
-(setq org-babel-default-header-args:jupyter
-      '(;; (:session . "jupyter")
-        ;; (:async . "no")
-        (:results . "output replace")
-        ;; (:kernel . "python")
-        ))
-
-(setq org-babel-default-header-args:python
-      '(;; (:session . "python")
-        ;; (:async . "no")
-        (:results . "output replace")
-        ;; (:kernel . "python")
-        ))
 
 (defun pairp (pair)
   "Return `t' if `PAIR' is a dotted pair, otherwise `NIL'.
@@ -212,30 +221,57 @@ Example
 ;; (org-babel--default-header-args-symbol 'elis)
 
 (defun org-babel-default-header-args-symbol (&optional lang)
-  "`LANG'."
+  "Get `LANG'."
   (intern-soft (org-babel--default-header-args-symbol lang)))
 
-(defun org-babel--default-header-args (&optional lang)
-  "`LANG'."
-  (symbol-value (org-babel-default-header-args-symbol lang)))
+;; (defun org-babel--default-header-args (&optional lang)
+;;   "`LANG'."
+;;   (symbol-value (org-babel-default-header-args-symbol lang)))
 
-(defun org-babel-default-header-args (&optional lang)
-  "`LANG'."
-  (org-babel-combine-header-arg-lists
-   (org-babel--default-header-args)
-   (and lang (org-babel--default-header-args lang))))
+;; (defun org-babel-default-header-args (&optional lang)
+;;   "`LANG'."
+;;   (org-babel-combine-header-arg-lists
+;;    (org-babel--default-header-args)
+;;    (and lang (org-babel--default-header-args lang))))
 
-;; (let ((header-args (org-babel-default-header-args 'elisp))
-;;       (as '(:lexical)))
-;;   (loop for header in header-args
-;;         for (h . a) = header
-;;         when (member h as)
-;;         collect header))
+(defmacro org-babel-default-header-args (&optional lang)
+  "`LANG'"
+  `(symbol-value `,(org-babel-default-header-args-symbol ,lang)))
 
-;; (let ((h (org-babel-default-header-args 'elisp))
-;;       (as '(:lexical :exports))
-;;       (-compare-fn (-lambda ((h) a) (equalp a h))))
-;;   (-intersection h as))
+(use-package! ob-shell)
+
+;; :prologue "exec 2>&1" :epilogue ":"
+(setf (org-babel-default-header-args 'ash)
+      '((:prologue . "exec 2>&1")
+        (:epilogue . ":")))
+
+(setf (org-babel-default-header-args 'sh)
+      (cons* `(:prologue "exec 2>&1" :epilogue ":")))
+
+(setq org-babel-default-header-args:jupyter-typescript
+      '((:session . "ts")
+        (:kernel . "tslab")))
+
+(setq org-babel-default-header-args:jupyter-python
+      '((:session . "jupyter")
+        (:async . "yes")
+        (:results . "value replace")
+        (:kernel . "python")
+        ))
+
+(setq org-babel-default-header-args:jupyter
+      '(;; (:session . "jupyter")
+        ;; (:async . "no")
+        (:results . "output replace")
+        ;; (:kernel . "python")
+        ))
+
+(setq org-babel-default-header-args:python
+      '(;; (:session . "python")
+        ;; (:async . "no")
+        (:results . "output replace")
+        ;; (:kernel . "python")
+        ))
 
 (defvar org-babel-format-header-args '(:exports)
   "Default header args to insert on expanded org src headers.")
@@ -428,19 +464,46 @@ Ignore `_BACKEND'."
 (use-package! visual-regexp)
 (use-package! visual-regexp-steroids)
 
-(after! typescript-mode
-  (defun ts-compile-current-file (&optional dir)
-    (let* ((ts (file-name-nondirectory buffer-file-name))
-           (js (format "%s.js" (file-name-sans-extension ts))))
-      (format "tsc --outFile %s %s" js ts)))
+;; (after! typescript-mode
+;;   (defun ts-compile-current-file (&optional dir)
+;;     (let* ((ts (file-name-nondirectory buffer-file-name))
+;;            (js (format "%s.js" (file-name-sans-extension ts))))
+;;       (format "tsc --outFile %s %s" js ts)))
 
-  (defun ts-compile-functions-setup ()
-    (add-to-list 'counsel-compile-local-builds 'ts-compile-current-file))
+;;   (defun ts-compile-functions-setup ()
+;;     (add-to-list 'counsel-compile-local-builds 'ts-compile-current-file))
 
-  (add-hook! 'typescript-mode-hook #'ts-compile-functions-setup))
+;;   (add-hook! 'typescript-mode-hook #'ts-compile-functions-setup))
 
 ;; https://books.google.com.mx/books?id=9apQfCRhvm0C&pg=PA230&lpg=PA230&dq=lisp+format+separate+space&source=bl&ots=UgJQLHr_de&sig=ACfU3U0xTSZf2WUoRvr2Npo-BI8I5AEuHw&hl=en&sa=X&ved=2ahUKEwj4gq2slKvzAhUEk2oFHYMKAd8Q6AF6BAgZEAM#v=onepage&q=lisp%20format%20separate%20space&f=false
 ;; (format nil "|~{~<a~%b~,33:;~2d ~>~}|" (loop for x below 100 collect x))
+
+;;; handle "fd" as if pressing Escape
+;;; or a better way:
+;; https://stackoverflow.com/questions/63322146/how-to-map-jh-and-fd-to-esc-in-doom-emacs
+;;; or globally in the window manager (?)
+;; TODO: stop developing every idea
+(after! key-chord
+  :config
+  (key-chord-mode t)
+  (key-chord-define-global "fd" 'evil-normal-state))
+
+;;; untested
+;;; references
+;; https://emacs.stackexchange.com/questions/4217/how-to-modify-a-buffer-without-undo-noticing
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Maintaining-Undo.html
+;; https://emacs.stackexchange.com/questions/7558/how-to-collapse-undo-history
+(defmacro save-undo-excursion (&rest body)
+  (declare (indent 0) (debug t))
+  (let ((ul (make-symbol "undo-list"))
+        (ut (make-symbol "undo-tree")))
+    `(let ((,ul (buffer-undo-list))
+           (,ut (buffer-undo-tree)))
+       (buffer-disable-undo)
+       (unwind-protect (progn ,@body)
+         (setq buffer-undo-list ,ul
+               buffer-undo-tree ,ut)
+         (buffer-enable-undo)))))
 
 (provide 'config)
 ;;; config.el ends here

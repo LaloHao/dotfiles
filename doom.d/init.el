@@ -189,7 +189,7 @@
        rst               ; ReST in peace
        ;; (ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        ;; rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
-       scala             ; java, but good
+       ;; scala             ; java, but good ;; Package not available: ob-ammonit
        (scheme
         +chicken
         +guile

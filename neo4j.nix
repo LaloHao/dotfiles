@@ -74,9 +74,6 @@ let
     bolt.ssl_policy=${cfg.bolt.sslPolicy}
     dbms.connector.bolt.tls_level=${cfg.bolt.tlsLevel}
 
-    # neo4j-shell
-    dbms.shell.enabled=${boolToString cfg.shell.enable}
-
     # SSL Policies
     ${concatStringsSep "\n" sslPolicies}
 
@@ -93,9 +90,6 @@ let
     dbms.jvm.additional=-Djdk.tls.ephemeralDHKeySize=2048
     dbms.jvm.additional=-Djdk.tls.rejectClientInitiatedRenegotiation=true
     dbms.jvm.additional=-Dunsupported.dbms.udc.source=tarball
-
-    # Usage Data Collector
-    dbms.udc.enabled=${boolToString cfg.udc.enable}
 
     # Extra Configuration
     ${cfg.extraServerConfig}

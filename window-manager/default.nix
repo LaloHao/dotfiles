@@ -28,8 +28,8 @@ in {
   };
   home.file.".xmonad/xmonad.hs" = {
     source = ./xmonad.hs;
-    onChange = ''
-      ${config.xsession.windowManager.command} --recompile
-    '';
+    # onChange = ''
+    #   ${config.xsession.windowManager.command} --recompile
+    # '';
   };
 }

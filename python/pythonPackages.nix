@@ -1,8 +1,9 @@
 { config, pkgs, ... }:
 let
-  cudatoolkit = pkgs.cudaPackages.cudatoolkit_11;
-  cudnn = pkgs.cudnn_cudatoolkit_11;
-  nccl = pkgs.nccl_cudatoolkit_11;
+  cuda        = pkgs.cudaPackages;
+  cudatoolkit = cuda.cudatoolkit;
+  cudnn       = cuda.cudnn;
+  nccl        = cuda.nccl;
   magma = pkgs.magma.override { inherit cudatoolkit; };
   pythonPackages = pip: [
     pip.tensorflowWithCuda

@@ -2,5 +2,7 @@
 
 (self: self.tensorflowWithCuda.override (o: {
   cudaSupport = true;
-  inherit cudatoolkit cudnn nccl;
+  cudaPackages = {
+    inherit cudatoolkit cudnn nccl;
+  };
 }))

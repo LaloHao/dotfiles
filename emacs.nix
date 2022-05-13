@@ -35,13 +35,25 @@ let
     '';
   } // args;
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
-    url = "https://github.com/vlaci/nix-doom-emacs/archive/201e023c671c50c0ee2efe5ca11143161166a736.tar.gz";
-    sha256 = "0a9df4sg9bq13zvd6cgc1qidmzd9lll55fx25d9frm5fl7jrn561";
+    # new
+    url = "https://github.com/vlaci/nix-doom-emacs/archive/33064319607745856f488a998ca3db8ffcede865.tar.gz";
+    sha256 = "0h9sg744w6nafmp1lkpdrb71c6gpy8p8i05iy5rn1f3vqdzvd90x";
+    # old
+    # url = "https://github.com/vlaci/nix-doom-emacs/archive/201e023c671c50c0ee2efe5ca11143161166a736.tar.gz";
+    # sha256 = "0a9df4sg9bq13zvd6cgc1qidmzd9lll55fx25d9frm5fl7jrn561";
   }) {
     doomPrivateDir = ./doom.d;
+    dependencyOverrides = {
+      "emacs-overlay" = (builtins.fetchTarball {
+          url = https://github.com/nix-community/emacs-overlay/archive/92f0648d4001e7921d77c17f17f23df02697937f.tar.gz;
+          sha256 = "01jpnr7bm1ch1grzx1515flwbmkzn9jx05kpc8sdzpsy1ix5vska";
+      });
+    };
     emacsPackagesOverlay = self: super:
       let mkPackage' = args: mkPackage (args // { inherit self; });
       in {
+        gitignore-mode = self.git-modes;
+        gitconfig-mode = self.git-modes;
         cl-format = mkPackage' {
           provider = "gitlab";
           name = "cl-format";
@@ -129,7 +141,7 @@ in {
 
     # required for :lang python
     # python-language-server # does not works, hangs
-    python38Packages.python-language-server
+    # python38Packages.python-language-server # marked as broken
 
     # used in xclip
     expect

@@ -44,7 +44,6 @@ let
       torchvision = (super.torchvision.override {
         cudaSupport = true;
         pytorch = pytorchWithCuda;
-        inherit cudatoolkit cudnn;
       });
       torchfile = self.callPackage ./torchfile.nix { };
       visdom = self.callPackage ./visdom.nix { inherit torchfile; };

@@ -2,5 +2,7 @@
 
 (self: self.torchvision.override {
   cudaSupport = true;
-  inherit pytorch cudatoolkit cudnn;
+  cudaPackages = {
+    inherit cudatoolkit cudnn nccl;
+  };
 })

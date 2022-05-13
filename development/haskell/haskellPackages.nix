@@ -7,8 +7,8 @@ haskellPackages.ghcWithHoogle(p: with p; [
   # xmonad
   # xmonad-contrib
   # xmonad-extras
-  accelerate
-  accelerate-llvm-ptx
+  # accelerate
+  # accelerate-llvm-ptx
   cuda
   OpenGL
   GLFW-b

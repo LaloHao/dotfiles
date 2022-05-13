@@ -32,7 +32,7 @@
 (package! graphql-mode)
 
 (package! happy-mode)
-(package! org-plus-contrib :recipe (:host github :repo "emacs-straight/org"))
+;; (package! org-plus-contrib :recipe (:host github :repo "emacs-straight/org")) ;; package removed?
 
 (package! edit-server)
 

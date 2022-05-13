@@ -2,5 +2,7 @@
 
 (self: self.pytorchWithCuda.override {
   cudaSupport = true;
-  inherit cudatoolkit cudnn nccl magma;
+  cudaPackages = {
+    inherit cudatoolkit cudnn nccl;
+  };
 })
