@@ -19,10 +19,6 @@
 ;;
 ;;; Code:
 
-;; Fallback to substitute command using key `s'
-(after! evil-snipe
-  (evil-snipe-mode -1))
-
 (setq user-full-name "Eduardo V."
       user-mail-address "lalohao@gmail.com")
 

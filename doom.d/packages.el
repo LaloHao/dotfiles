@@ -29,6 +29,8 @@
   (recipe 'nix-sandbox)
   (recipe 'nixos-options))
 
+;; Fallback to substitute command using key `s'
+(package! evil-snipe :disable t)
 (package! graphql-mode)
 
 (package! happy-mode)
